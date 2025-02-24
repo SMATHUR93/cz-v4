@@ -7,8 +7,8 @@ interface PersonContext {
      people: Person[];
      fetchPeople: () => Promise<void>;
      addPerson: (person: Person) => Promise<void>;
-     updatePerson: (id: String, person: Person) => Promise<void>;
-     deletePerson: (id: String) => Promise<void>;
+     updatePerson: (id: string, person: Person) => Promise<void>;
+     deletePerson: (id: string) => Promise<void>;
 }
 
 const PersonContext = createContext<PersonContext | undefined>(undefined);
@@ -80,7 +80,7 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
           }
      };
 
-     const updatePerson = async (id: String, person: Person) => {
+     const updatePerson = async (id: string, person: Person) => {
           if (!userAuthenticated) {
                return; // Prevent fetching if not logged in.
           }
@@ -106,7 +106,7 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
           }
      };
 
-     const deletePerson = async (id: String) => {
+     const deletePerson = async (id: string) => {
           if (!userAuthenticated) {
                return; // Prevent fetching if not logged in.
           }
@@ -139,7 +139,9 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
                addPerson,
                updatePerson,
                deletePerson
-          }}></PersonContext.Provider >
+          }}>
+               {children}
+          </PersonContext.Provider >
      );
 
 };
