@@ -14,17 +14,17 @@ export const handler: Handler = async (event) => {
           return { statusCode: 405, body: "Method Not Allowed" };
      }
      try {
-          const { id, name, email } = JSON.parse(event.body || "{}");
-          if (!id || !name || !email) {
+          const { id, name, email, dob } = JSON.parse(event.body || "{}");
+          if (!id || !name || !email || !dob) {
                return {
                     statusCode: 400,
                     body: JSON.stringify({ error: "Missing required fields" }),
                };
           }
-          await db.collection("people").doc(id).update({ name, email });
+          await db.collection("people").doc(id).update({ name, email, dob });
           return {
                statusCode: 200,
-               body: JSON.stringify({ id, name, email }),
+               body: JSON.stringify({ id, name, email, dob }),
           };
      } catch (error) {
           return { statusCode: 500, body: JSON.stringify({ error: error }) };

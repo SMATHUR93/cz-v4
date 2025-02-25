@@ -16,17 +16,17 @@ export const handler: Handler = async (event) => {
           return { statusCode: 405, body: "Method Not Allowed" };
      }
      try {
-          const { name, email } = JSON.parse(event.body || "{}");
-          if (!name || !email) {
+          const { name, email, dob } = JSON.parse(event.body || "{}");
+          if (!name || !email || !dob) {
                return {
                     statusCode: 400,
                     body: JSON.stringify({ error: "Missing required fields" }),
                };
           }
-          const docRef = await db.collection("people").add({ name, email })
+          const docRef = await db.collection("people").add({ name, email, dob })
           return {
                statusCode: 201,
-               body: JSON.stringify({ id: docRef.id, name, email }),
+               body: JSON.stringify({ id: docRef.id, name, email, dob }),
           };
      } catch (error) {
           return { statusCode: 500, body: JSON.stringify({ error: error }) };
