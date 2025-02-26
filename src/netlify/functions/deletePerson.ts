@@ -29,6 +29,7 @@ export const handler: Handler = async (event) => {
                body: JSON.stringify({ message: "Person deleted successfully" }),
           };
      } catch (error) {
+          console.error(error);
           return { statusCode: 500, body: JSON.stringify({ error: error }) };
      }
 };

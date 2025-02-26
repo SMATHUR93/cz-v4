@@ -14,12 +14,19 @@ const handler: Handler = async (event, context) => {
      console.log(`context is ${context}`);
      try {
           const snapshot = await db.collection("people").get();
-          const people = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+          const people = snapshot.docs.map(doc => {
+               return ({
+                    id: doc.id,
+                    ...doc.data(),
+                    dob: doc.data()?.dob?.toDate()
+               });
+          });
           return {
                statusCode: 200,
                body: JSON.stringify(people),
           };
      } catch (error) {
+          console.error(error);
           return { statusCode: 500, body: JSON.stringify({ error: error }) };
      }
 };

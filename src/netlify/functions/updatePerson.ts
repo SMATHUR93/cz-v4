@@ -1,6 +1,7 @@
 import { Handler } from "@netlify/functions";
 import * as admin from "firebase-admin";
 import { authenticate } from "./utils/authMiddleware";
+import { Timestamp } from 'firebase/firestore';
 
 const db = admin.firestore();
 
@@ -21,12 +22,17 @@ export const handler: Handler = async (event) => {
                     body: JSON.stringify({ error: "Missing required fields" }),
                };
           }
-          await db.collection("people").doc(id).update({ name, email, dob });
+          await db.collection("people").doc(id).update({
+               name,
+               email,
+               dob: Timestamp.fromDate(new Date(dob)).toDate()
+          });
           return {
                statusCode: 200,
                body: JSON.stringify({ id, name, email, dob }),
           };
      } catch (error) {
+          console.error(error);
           return { statusCode: 500, body: JSON.stringify({ error: error }) };
      }
 };

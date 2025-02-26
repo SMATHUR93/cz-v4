@@ -50,6 +50,8 @@ const Login = () => {
                          router.push('/');
                     }}
                >Sign in</button>
+               <br />
+               <br />
                <button
                     className="btn btn-primary w-100 py-2"
                     onClick={async () => {
@@ -57,7 +59,7 @@ const Login = () => {
                          router.push('/');
                     }}
                >Register</button>
-               <p className="mt-5 mb-3 text-body-secondary">© 2014–2025</p>
+               <p className="mt-5 mb-3 text-body-secondary text-align-center">© 2014–2025</p>
           </main>
      );
 };

@@ -155,5 +155,3 @@ export const usePersonContext = () => {
      }
      return context;
 };
-
-console.log(`usePersonContext  = ${usePersonContext}`);
