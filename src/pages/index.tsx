@@ -78,10 +78,13 @@ const Home = () => {
             <Table striped bordered>
               <thead>
                 <tr>
-                  <th style={{ width: '25%' }}>Name</th>
-                  <th style={{ width: '25%' }}>Email Address</th>
-                  <th style={{ width: '25%' }}>Date of Birth </th>
-                  <th style={{ width: '25%' }} colSpan={2}> Actions </th>
+                  <th style={{ width: '15%' }}>Name</th>
+                  <th style={{ width: '15%' }}>Email Address</th>
+                  <th style={{ width: '15%' }}>Date of Birth </th>
+                  <th style={{ width: '12%' }}>Year Sign </th>
+                  <th style={{ width: '12%' }}>Month Sign </th>
+                  <th style={{ width: '12%' }}>Hour Sign </th>
+                  <th style={{ width: '19%' }} colSpan={2}> Actions </th>
                 </tr>
               </thead>
               <tbody>
@@ -91,6 +94,9 @@ const Home = () => {
                       <td>{person?.name}</td>
                       <td>{person?.email}</td>
                       <td>{new Date(person?.dob)?.toUTCString()}</td>
+                      <td>{person?.yearSign?.english}</td>
+                      <td>{person?.monthSign?.english}</td>
+                      <td>{person?.hourSign?.english}</td>
                       <td>
                         <div className="hstack gap-3">
                           {/* <button type="button" className="btn btn-secondary">Submit</button> */}

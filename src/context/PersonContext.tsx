@@ -73,8 +73,7 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
                if (!response.ok) {
                     throw new Error(`Failed to add person.`);
                }
-               const data = await response.json();
-               setPeople([...people, data]);
+               fetchPeople();
           } catch (error: unknown) {
                console.log(`Error adding person : ${error}`);
           }
