@@ -5,7 +5,8 @@ const FooterSection = () => {
      return (
           <Navbar fixed="bottom" className="footer mt-auto py-3 bg-body-tertiary">
                <div className="container">
-                    <span className="text-body-secondary">© 2014–2025</span>
+                    <p className="float-end" > <a href="#" > Back to top </a></p >
+                    <p>© 2017–2024 Company, Inc. · <a href="#" > Privacy </a> · <a href="#">Terms</a > </p>
                </div>
           </Navbar>
      );

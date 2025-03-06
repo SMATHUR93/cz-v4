@@ -6,6 +6,8 @@ import { auth } from "@/lib/firebase";
 interface PersonContext {
      people: Person[];
      fetchPeople: () => Promise<void>;
+     person: Person | undefined;
+     fetchPerson: (id: string) => Promise<void>;
      addPerson: (person: Person) => Promise<void>;
      updatePerson: (id: string, person: Person) => Promise<void>;
      deletePerson: (id: string) => Promise<void>;
@@ -15,6 +17,7 @@ const PersonContext = createContext<PersonContext | undefined>(undefined);
 
 const PersonProvider = ({ children }: { children: ReactNode }) => {
      const [people, setPeople] = useState<Person[]>([]);
+     const [person, setPerson] = useState<Person>();
      const [userAuthenticated, setUserAuthenticated] = useState(false);
      const API_BASE_URL = process.env.NODE_ENV === "development" ? "http://localhost:8888" : "";
 
@@ -39,6 +42,7 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
           const token = await currentUser.getIdToken();
           try {
                const response = await fetch(`${API_BASE_URL}/.netlify/functions/fetchPeople`, {
+                    method: "GET",
                     headers: {
                          authorization: `Bearer ${token}`
                     }
@@ -48,6 +52,32 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
                }
                const data = await response.json();
                setPeople(data);
+          } catch (error: unknown) {
+               console.log(`Error fetching people data : ${error}`);
+          }
+     };
+
+     const fetchPerson = async (id: string) => {
+          if (!userAuthenticated) {
+               return; // Prevent fetching if not logged in.
+          }
+          const currentUser = auth.currentUser;
+          if (!currentUser) {
+               throw new Error(`User not Authenticated`);
+          }
+          const token = await currentUser.getIdToken();
+          try {
+               const response = await fetch(`${API_BASE_URL}/.netlify/functions/fetchPerson/${id}`, {
+                    method: "GET",
+                    headers: {
+                         authorization: `Bearer ${token}`
+                    }
+               });
+               if (!response.ok) {
+                    throw new Error(`Failed to fetch People Data`);
+               }
+               const data = await response.json();
+               setPerson(data);
           } catch (error: unknown) {
                console.log(`Error fetching people data : ${error}`);
           }
@@ -135,6 +165,8 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
           < PersonContext.Provider value={{
                people,
                fetchPeople,
+               person,
+               fetchPerson,
                addPerson,
                updatePerson,
                deletePerson

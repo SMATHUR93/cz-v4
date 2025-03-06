@@ -12,7 +12,7 @@ import UserTable from './UserTable';
 
 const Home = () => {
   const { user, logout } = useAuth();
-  const { people, fetchPeople, addPerson, updatePerson, deletePerson } = usePersonContext();
+  const { fetchPeople, addPerson } = usePersonContext();
   const router = useRouter();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ const Home = () => {
   return (
     <div className="d-flex flex-column h-100 justify-content-md-center d-flex align-items-center py-4 bg-body-tertiary">
 
-      <HeaderSection logout={logout} />
+      <HeaderSection logout={logout} backButtonNeeded={false} />
 
       <Container>
 
@@ -71,7 +71,7 @@ const Home = () => {
 
         <Row className="justify-content-md-center">
           <Col>
-            <UserTable people={people} updatePerson={updatePerson} deletePerson={deletePerson} name={name} email={email} birthdaytime={birthdaytime} />
+            <UserTable name={name} email={email} birthdaytime={birthdaytime} />
           </Col>
         </Row>
       </Container>

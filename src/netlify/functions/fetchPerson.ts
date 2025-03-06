@@ -14,17 +14,25 @@ const handler: Handler = async (event) => {
           return { statusCode: 405, body: "Method Not Allowed" };
      }
      try {
-          const snapshot = await db.collection("people").get();
-          const people = snapshot.docs.map(doc => {
-               return ({
-                    id: doc.id,
-                    ...doc.data(),
-                    dob: doc.data()?.dob?.toDate()
-               });
-          });
+          const id = event.rawUrl.split('fetchPerson/')[1] || "{}";
+          console.log("Start Debug block");
+          console.log(id);
+          console.log("Finish Debug block");
+          if (!id) {
+               return {
+                    statusCode: 400,
+                    body: JSON.stringify({ error: "Missing person ID" }),
+               };
+          }
+          const snapshot = await db.collection("people").doc(id).get(); // .where("id", "==", id).get();
+          const person = {
+               id: snapshot.data()?.id,
+               ...snapshot.data(),
+               dob: snapshot.data()?.dob?.toDate()
+          };
           return {
                statusCode: 200,
-               body: JSON.stringify(people),
+               body: JSON.stringify(person),
           };
      } catch (error) {
           console.error(error);
