@@ -5,8 +5,8 @@ import { useRouter } from 'next/router';
 const Login = () => {
      const { login, register } = useAuth();
      const router = useRouter();
-     const [email, setEmail] = useState('');
-     const [password, setPassword] = useState('');
+     const [email, setEmail] = useState('temp1@example.com');
+     const [password, setPassword] = useState('temp1@example.com');
 
      return (
           <div className="d-flex align-items-center py-4 bg-body-tertiary">

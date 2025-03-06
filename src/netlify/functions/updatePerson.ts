@@ -2,6 +2,7 @@ import { Handler } from "@netlify/functions";
 import * as admin from "firebase-admin";
 import { authenticate } from "./utils/authMiddleware";
 import { Timestamp } from 'firebase/firestore';
+import { getFullChineseZodiac, symbolDetails } from "./commonMethods";
 
 const db = admin.firestore();
 
@@ -22,10 +23,26 @@ export const handler: Handler = async (event) => {
                     body: JSON.stringify({ error: "Missing required fields" }),
                };
           }
+
+          const inputDate = new Date(dob);
+          const year = inputDate.getFullYear();
+          const month = inputDate.getMonth();
+          const date = inputDate.getDate();
+          const hour = inputDate.getHours();
+          const {
+               yearZodiac,
+               monthZodiac,
+               hourZodiac
+          } = getFullChineseZodiac(year, month, date, hour);
+
           await db.collection("people").doc(id).update({
                name,
                email,
-               dob: Timestamp.fromDate(new Date(dob)).toDate()
+               dob: Timestamp.fromDate(new Date(dob)).toDate(),
+               yearSign: symbolDetails[yearZodiac],
+               monthSign: symbolDetails[monthZodiac],
+               hourSign: symbolDetails[hourZodiac],
+               createdAt: Timestamp.fromDate(new Date()).toDate()
           });
           return {
                statusCode: 200,
