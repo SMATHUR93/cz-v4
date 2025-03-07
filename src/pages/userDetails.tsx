@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Person } from '@/types';
 import { usePersonContext } from '@/context/PersonContext';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
@@ -9,6 +10,7 @@ import HeaderSection from '@/components/HeaderSection';
 import FooterSection from '@/components/FooterSection';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
+import { Table } from "react-bootstrap";
 
 import Image from 'next/image';
 
@@ -33,7 +35,11 @@ const UserDetails = () => {
      };
 
      const { logout } = useAuth();
-     const { person } = usePersonContext();
+     const { person, people } = usePersonContext();
+     const thisPerson = { ...person };
+
+     const [tablularData, setTabularData] = useState<{ name: string, compatibilityPercent: number }[]>([]);
+
      const router = useRouter();
      const yearSign: string = `${person?.yearSign?.english}`;
      const yearSignWallpaperIndex = zodiacs[yearSign] - 1;
@@ -47,13 +53,61 @@ const UserDetails = () => {
      const hourSignWallpaperIndex = zodiacs[hourSign] - 1;
      const hourSignWallpaper = backgroundImgs[hourSignWallpaperIndex + 24];
 
-     console.log(`yearSignWallpaper is ${yearSignWallpaper}, monthSignWallpaper is ${monthSignWallpaper}, hourSignWallpaper is ${hourSignWallpaper}`);
+     // console.log(`yearSignWallpaper is ${yearSignWallpaper}, monthSignWallpaper is ${monthSignWallpaper}, hourSignWallpaper is ${hourSignWallpaper}`);
 
      useEffect(() => {
           if (!person) {
                router.push('/');
+          } else {
+               let tempArr = [];
+               for (let i = 0; i < people.length; i++) {
+                    let currentPerson = people[i];
+                    if (currentPerson?.id == thisPerson?.id) {
+                         return;
+                    } else {
+                         let compatibilityPercent = 0.0;
+
+                         const currentPersonYearSign = `${currentPerson?.yearSign?.english.toLowerCase()}`;
+                         if (thisPerson?.yearSign?.bestMatch.indexOf(currentPersonYearSign) != -1) {
+                              compatibilityPercent += 1 * 25;
+                         } else if (thisPerson?.yearSign?.averageMatch.indexOf(currentPersonYearSign) != -1) {
+                              compatibilityPercent += 0.75 * 25;
+                         } else if (thisPerson?.yearSign?.superBad.indexOf(currentPersonYearSign) != -1) {
+                              compatibilityPercent += 0.5 * 25;
+                         } else if (thisPerson?.yearSign?.harmful.indexOf(currentPersonYearSign) != -1) {
+                              compatibilityPercent += 0.25 * 25;
+                         }
+
+                         const currentPersonMonthSign = `${currentPerson?.monthSign?.english.toLowerCase()}`;
+                         if (thisPerson?.monthSign?.bestMatch.indexOf(currentPersonMonthSign) != -1) {
+                              compatibilityPercent += 1 * 33;
+                         } else if (thisPerson?.monthSign?.averageMatch.indexOf(currentPersonMonthSign) != -1) {
+                              compatibilityPercent += 0.75 * 33;
+                         } else if (thisPerson?.monthSign?.superBad.indexOf(currentPersonMonthSign) != -1) {
+                              compatibilityPercent += 0.5 * 33;
+                         } else if (thisPerson?.monthSign?.harmful.indexOf(currentPersonMonthSign) != -1) {
+                              compatibilityPercent += 0.25 * 33;
+                         }
+
+                         const currentPersonhourSign = `${currentPerson?.hourSign?.english.toLowerCase()}`;
+                         if (thisPerson?.hourSign?.bestMatch.indexOf(currentPersonhourSign) != -1) {
+                              compatibilityPercent += 1 * 42;
+                         } else if (thisPerson?.hourSign?.averageMatch.indexOf(currentPersonhourSign) != -1) {
+                              compatibilityPercent += 0.75 * 42;
+                         } else if (thisPerson?.hourSign?.superBad.indexOf(currentPersonhourSign) != -1) {
+                              compatibilityPercent += 0.5 * 42;
+                         } else if (thisPerson?.hourSign?.harmful.indexOf(currentPersonhourSign) != -1) {
+                              compatibilityPercent += 0.25 * 42;
+                         }
+                         tempArr.push({
+                              name: currentPerson?.name,
+                              compatibilityPercent: compatibilityPercent
+                         });
+                    }
+               }
+               setTabularData([...tempArr]);
           }
-     }, [person]);
+     }, [person, people]);
 
      return (
           <div className="d-flex flex-column h-100 justify-content-md-center d-flex align-items-center py-4 bg-body-tertiary">
@@ -140,19 +194,19 @@ const UserDetails = () => {
                                         <h4 className="featurette-heading fw-normal lh-3" > The year of {person?.yearSign?.english}</h4>
                                         <h4><p className="text-body-secondary" > It is a {person?.yearSign?.fixedElement} & {person?.yearSign?.yinYang} sign from {person?.yearSign?.trine} Trine.</p></h4>
                                         <p className="lead" >{person?.yearSign?.text}</p>
-                                        <p className="lead" >
+                                        <div className="lead" >
                                              <ul>
                                                   <li>Best Match is {person?.yearSign?.bestMatch.toString()}</li>
                                                   <li>Average Match is {person?.yearSign?.averageMatch.toString()}</li>
                                                   <li>Bad Match is {person?.yearSign?.superBad.toString()}</li>
                                                   <li>Harmful Match is {person?.yearSign?.harmful.toString()}</li>
                                              </ul>
-                                        </p>
+                                        </div>
                                    </div>
                                    <div className="col-md-5" style={{ position: 'relative', width: '500px', height: '500px' }}>
                                         <Image
                                              // src={`/static/images/wallpapers/square-versatiles.svg`}
-                                             src={`static/images/wallpapers/${yearSignWallpaper}`}
+                                             src={`/static/images/wallpapers/${yearSignWallpaper}`}
                                              alt={`${person?.yearSign?.english}`}
                                              objectFit="cover"
                                              layout="fill"
@@ -167,14 +221,14 @@ const UserDetails = () => {
                                         <h4 className="featurette-heading fw-normal lh-3" > The year of {person?.monthSign?.english}</h4>
                                         <h4><p className="text-body-secondary" > It is a {person?.monthSign?.fixedElement} & {person?.monthSign?.yinYang} sign from {person?.monthSign?.trine} Trine.</p></h4>
                                         <p className="lead" >{person?.monthSign?.text}</p>
-                                        <p className="lead" >
+                                        <div className="lead" >
                                              <ul>
                                                   <li>Best Match is {person?.monthSign?.bestMatch.toString()}</li>
                                                   <li>Average Match is {person?.monthSign?.averageMatch.toString()}</li>
                                                   <li>Bad Match is {person?.monthSign?.superBad.toString()}</li>
                                                   <li>Harmful Match is {person?.monthSign?.harmful.toString()}</li>
                                              </ul>
-                                        </p>
+                                        </div>
                                    </div>
                                    <div className="col-md-5 order-md-1" style={{ position: 'relative', width: '500px', height: '500px' }}>
                                         <Image
@@ -194,14 +248,14 @@ const UserDetails = () => {
                                         <h4 className="featurette-heading fw-normal lh-3" > The year of {person?.hourSign?.english}</h4>
                                         <h4><p className="text-body-secondary" > It is a {person?.hourSign?.fixedElement} & {person?.hourSign?.yinYang} sign from {person?.hourSign?.trine} Trine.</p></h4>
                                         <p className="lead" >{person?.hourSign?.text}</p>
-                                        <p className="lead" >
+                                        <div className="lead" >
                                              <ul>
                                                   <li>Best Match is {person?.hourSign?.bestMatch.toString()}</li>
                                                   <li>Average Match is {person?.hourSign?.averageMatch.toString()}</li>
                                                   <li>Bad Match is {person?.hourSign?.superBad.toString()}</li>
                                                   <li>Harmful Match is {person?.hourSign?.harmful.toString()}</li>
                                              </ul>
-                                        </p>
+                                        </div>
                                    </div>
                                    <div className="col-md-5" style={{ position: 'relative', width: '500px', height: '500px' }}>
                                         <Image
@@ -215,12 +269,46 @@ const UserDetails = () => {
                               </div>
 
                               <hr className="featurette-divider" />
+
+                              <div id="compatibilitySection" className="row featurette" >
+                                   <div className="col" >
+                                        <div className="table-responsive h-100 p-5 bg-body-tertiary border rounded-3">
+                                             <h3>Compatibility Table</h3>
+                                             <br />
+                                             <Table striped bordered>
+                                                  <thead>
+                                                       <tr>
+                                                            <th style={{ width: '50%' }}>Name</th>
+                                                            <th style={{ width: '50%' }}>Compatibility</th>
+                                                       </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                       {Array.isArray(tablularData) ? tablularData.length > 0 ? (tablularData.map((currentPerson: any) => {
+                                                            return (
+                                                                 <tr key={currentPerson?.id}>
+                                                                      <td>{currentPerson?.name}</td>
+                                                                      <td>{
+                                                                           currentPerson?.compatibilityPercent >= 75 ? <span style={{ color: 'green' }}><b>`Good Match`</b></span> :
+                                                                                currentPerson?.compatibilityPercent >= 50 ? <span style={{ color: 'orange' }}><b>`Average Match`</b></span> :
+                                                                                     currentPerson?.compatibilityPercent >= 20 ? <span style={{ color: 'red' }}><b>`Bad Match`</b></span> :
+                                                                                          <span style={{ color: 'black' }}><b>`Harmful Match`</b></span>
+                                                                      }</td>
+                                                                 </tr>
+                                                            );
+                                                       })) : [] : []}
+                                                  </tbody>
+                                             </Table>
+                                        </div>
+                                   </div>
+                              </div>
+
+                              <hr className="featurette-divider" />
                          </Col>
                     </Row>
-               </Container>
+               </Container >
 
                <FooterSection />
-          </div>
+          </div >
      );
 };
 
