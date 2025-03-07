@@ -7,6 +7,7 @@ const FooterSection = () => {
                <div className="container">
                     <p className="float-end" > <a href="#" > Back to top </a></p >
                     <p>© 2017–2024 Company, Inc. · <a href="#" > Privacy </a> · <a href="#">Terms</a > </p>
+                    <a href="https://www.svgbackgrounds.com/set/free-svg-backgrounds-and-patterns/">Free SVG Backgrounds and Patterns by SVGBackgrounds.com</a>
                </div>
           </Navbar>
      );

@@ -89,7 +89,7 @@ const UserTable = ({ name, email, birthdaytime }: {
                                                        width={50}
                                                        height={50}
                                                   /></OverlayTrigger>
-                                        </td><td>
+                                        </td><td onClick={(e) => { e.stopPropagation(); return false; }}>
                                              <div className="hstack gap-3">
                                                   <Button variant="light" className="btn btn-outline-secondary" onClick={() => updatePerson(currentPerson.id!, { name, email, dob: new Date(birthdaytime) })}>Update</Button>
                                                   <div className="vr"></div>

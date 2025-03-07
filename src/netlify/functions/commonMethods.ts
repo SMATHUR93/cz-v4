@@ -11,10 +11,10 @@ export const getFullChineseZodiac = (year: number, month: number, day: number, h
           "Goat", "Monkey", "Rooster", "Dog", "Pig", "Rat"
      ];
 
-     const hourZodiacs = [
+     /* const hourZodiacs = [
           "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake",
           "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig"
-     ];
+     ]; */
 
      // Chinese New Year dates for some years (approximate)
      const chineseNewYearDates: { [key: number]: string } = {
@@ -34,15 +34,29 @@ export const getFullChineseZodiac = (year: number, month: number, day: number, h
           year -= 1;
      }
 
-     // Find the corresponding Chinese hour zodiac
-     const hourIndex = Math.ceil(hour / 2) % 12;
-
      return {
           yearZodiac: zodiacAnimals[year % 12],
           monthZodiac: monthZodiacs[(month) % 12], // Adjusted lunar shift
-          hourZodiac: hourZodiacs[hourIndex]
+          hourZodiac: getChineseZodiacFromHour(hour)
      };
 };
+
+function getChineseZodiacFromHour(hour: number): string {
+     if (hour >= 23 || hour < 1) return "Rat";
+     if (hour >= 1 && hour < 3) return "Ox";
+     if (hour >= 3 && hour < 5) return "Tiger";
+     if (hour >= 5 && hour < 7) return "Rabbit";
+     if (hour >= 7 && hour < 9) return "Dragon";
+     if (hour >= 9 && hour < 11) return "Snake";
+     if (hour >= 11 && hour < 13) return "Horse";
+     if (hour >= 13 && hour < 15) return "Goat";
+     if (hour >= 15 && hour < 17) return "Monkey";
+     if (hour >= 17 && hour < 19) return "Rooster";
+     if (hour >= 19 && hour < 21) return "Dog";
+     if (hour >= 21 && hour < 23) return "Pig";
+
+     return "Unknown"; // Fallback for invalid input
+}
 
 export const symbolDetails: ZodiacData = {
      "Rat": {

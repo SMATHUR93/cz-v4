@@ -14,9 +14,40 @@ import Image from 'next/image';
 
 const UserDetails = () => {
 
+     const backgroundImgs = [
+          'bermuda-traingle.svg', 'endless-constellation.svg', 'parabolic-pentagon.svg', 'repeating-chevrons.svg', 'sun-tornado.svg',
+          'bullseye-gradient.svg', 'flat-mountains.svg', 'parabolic-rectangle.svg', 'repeating-triangles.svg', 'tortoise-shell.svg',
+          'colorful-stingrays.svg', 'geometric-intersection.svg', 'parabolic-triangle.svg', 'rose-petals.svg', 'vanishing-stripes.svg',
+          'abstract-envelope.svg', 'confetti-doodles.svg', 'hollowed-boxes.svg', 'pattern-randomized.svg', 'scattered-forcefields.svg',
+          'varying-stripes.svg', 'abstract-timekeeper.svg', 'cornered-stairs.svg', 'large-triangles.svg', 'polka-dots.svg',
+          'slanted-gradient.svg', 'wavey-fingerprint.svg', 'alternating-arrowhead.svg', 'dalmatian-spots.svg', 'liquid-cheese.svg',
+          'protruding-squares.svg', 'spectrum-gradient.svg', 'wintery-sunburst.svg', 'bermuda-circle.svg', 'diagonal-stripes.svg',
+          'quantum-gradient.svg', 'square-versatiles.svg', 'zig-zag.svg', 'bermuda-diamond.svg', 'diamond-sunset.svg',
+          'page-turner.svg', 'radiant-gradient.svg', 'subtle-prism.svg', 'bermuda-square.svg', 'dragon-scales.svg',
+          'parabolic-ellipse.svg', 'rainbow-vortex.svg', 'subtle-stripes.svg'
+     ];
+
+     const zodiacs: Record<string, number> = {
+          "Rat": 1, "Ox": 2, "Tiger": 3, "Rabbit": 4, "Dragon": 5, "Snake": 6,
+          "Horse": 7, "Goat": 8, "Monkey": 9, "Rooster": 10, "Dog": 11, "Pig": 12
+     };
+
      const { logout } = useAuth();
      const { person } = usePersonContext();
      const router = useRouter();
+     const yearSign: string = `${person?.yearSign?.english}`;
+     const yearSignWallpaperIndex = zodiacs[yearSign] - 1;
+     const yearSignWallpaper = backgroundImgs[yearSignWallpaperIndex];
+
+     const monthSign: string = `${person?.monthSign?.english}`;
+     const monthSignWallpaperIndex = zodiacs[monthSign] - 1;
+     const monthSignWallpaper = backgroundImgs[monthSignWallpaperIndex + 12];
+
+     const hourSign: string = `${person?.hourSign?.english}`;
+     const hourSignWallpaperIndex = zodiacs[hourSign] - 1;
+     const hourSignWallpaper = backgroundImgs[hourSignWallpaperIndex + 24];
+
+     console.log(`yearSignWallpaper is ${yearSignWallpaper}, monthSignWallpaper is ${monthSignWallpaper}, hourSignWallpaper is ${hourSignWallpaper}`);
 
      useEffect(() => {
           if (!person) {
@@ -60,7 +91,7 @@ const UserDetails = () => {
                                              /></OverlayTrigger>
                                         <h2 className="fw-normal" > {person?.yearSign?.english} </h2>
                                         <p>  {`This is the symbol for year of Birth`} </p>
-                                        <p > <a className="btn btn-secondary" href="#" > View details »</a></p >
+                                        <p > <a className="btn btn-secondary" href="#yearSection" > View details »</a></p >
                                    </div>
                                    <div className="col-lg-4" >
                                         <OverlayTrigger
@@ -78,8 +109,8 @@ const UserDetails = () => {
                                                   height={130}
                                              /></OverlayTrigger>
                                         <h2 className="fw-normal" > {person?.monthSign?.english} </h2>
-                                        <p>  {`This is the symbol for year of Month`} </p>
-                                        <p> <a className="btn btn-secondary" href="#" > View details »</a></p>
+                                        <p>  {`This is the symbol for Month of year`} </p>
+                                        <p> <a className="btn btn-secondary" href="#monthSection" > View details »</a></p>
                                    </div>
                                    <div className="col-lg-4" >
                                         <OverlayTrigger
@@ -97,44 +128,89 @@ const UserDetails = () => {
                                                   height={130}
                                              /></OverlayTrigger>
                                         <h2 className="fw-normal" > {person?.hourSign?.english} </h2>
-                                        <p> {`This is the symbol for time of Birth`} </p>
-                                        <p> <a className="btn btn-secondary" href="#" > View details »</a></p>
+                                        <p> {`This is the symbol for Time of Birth`} </p>
+                                        <p> <a className="btn btn-secondary" href="#hourSection" > View details »</a></p>
                                    </div>
                               </div>
 
                               <hr className="featurette-divider" />
 
-                              <div className="row featurette" >
+                              <div id="yearSection" className="row featurette" >
                                    <div className="col-md-7" >
-                                        <h2 className="featurette-heading fw-normal lh-1" > First featurette heading. <span className="text-body-secondary" > It’ll blow your mind.</span></h2 >
+                                        <h4 className="featurette-heading fw-normal lh-3" > The year of {person?.yearSign?.english}</h4>
+                                        <h4><p className="text-body-secondary" > It is a {person?.yearSign?.fixedElement} & {person?.yearSign?.yinYang} sign from {person?.yearSign?.trine} Trine.</p></h4>
                                         <p className="lead" >{person?.yearSign?.text}</p>
+                                        <p className="lead" >
+                                             <ul>
+                                                  <li>Best Match is {person?.yearSign?.bestMatch.toString()}</li>
+                                                  <li>Average Match is {person?.yearSign?.averageMatch.toString()}</li>
+                                                  <li>Bad Match is {person?.yearSign?.superBad.toString()}</li>
+                                                  <li>Harmful Match is {person?.yearSign?.harmful.toString()}</li>
+                                             </ul>
+                                        </p>
                                    </div>
-                                   <div className="col-md-5" >
-                                        <svg className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false" > <title>Placeholder </title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"></rect > <text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em" > 500x500 </text></svg >
+                                   <div className="col-md-5" style={{ position: 'relative', width: '500px', height: '500px' }}>
+                                        <Image
+                                             // src={`/static/images/wallpapers/square-versatiles.svg`}
+                                             src={`static/images/wallpapers/${yearSignWallpaper}`}
+                                             alt={`${person?.yearSign?.english}`}
+                                             objectFit="cover"
+                                             layout="fill"
+                                        />
                                    </div>
                               </div>
 
                               <hr className="featurette-divider" />
 
-                              <div className="row featurette" >
+                              <div id="monthSection" className="row featurette" >
                                    <div className="col-md-7 order-md-2" >
-                                        <h2 className="featurette-heading fw-normal lh-1" > Oh yeah, it’s that good. <span className="text-body-secondary" > See for yourself.</span></h2 >
-                                        <p className="lead" > {person?.monthSign?.text}</p>
+                                        <h4 className="featurette-heading fw-normal lh-3" > The year of {person?.monthSign?.english}</h4>
+                                        <h4><p className="text-body-secondary" > It is a {person?.monthSign?.fixedElement} & {person?.monthSign?.yinYang} sign from {person?.monthSign?.trine} Trine.</p></h4>
+                                        <p className="lead" >{person?.monthSign?.text}</p>
+                                        <p className="lead" >
+                                             <ul>
+                                                  <li>Best Match is {person?.monthSign?.bestMatch.toString()}</li>
+                                                  <li>Average Match is {person?.monthSign?.averageMatch.toString()}</li>
+                                                  <li>Bad Match is {person?.monthSign?.superBad.toString()}</li>
+                                                  <li>Harmful Match is {person?.monthSign?.harmful.toString()}</li>
+                                             </ul>
+                                        </p>
                                    </div>
-                                   <div className="col-md-5 order-md-1" >
-                                        <svg className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false" > <title>Placeholder </title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"></rect > <text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em" > 500x500 </text></svg >
+                                   <div className="col-md-5 order-md-1" style={{ position: 'relative', width: '500px', height: '500px' }}>
+                                        <Image
+                                             src={`/static/images/wallpapers/${monthSignWallpaper}`}
+                                             // src={`/static/images/wallpapers/square-versatiles.svg`}
+                                             alt={`${person?.monthSign?.english}`}
+                                             objectFit="cover"
+                                             layout="fill"
+                                        />
                                    </div>
                               </div>
 
                               <hr className="featurette-divider" />
 
-                              <div className="row featurette" >
+                              <div id="hourSection" className="row featurette" >
                                    <div className="col-md-7" >
-                                        <h2 className="featurette-heading fw-normal lh-1" > And lastly, this one. <span className="text-body-secondary" > Checkmate.</span></h2 >
+                                        <h4 className="featurette-heading fw-normal lh-3" > The year of {person?.hourSign?.english}</h4>
+                                        <h4><p className="text-body-secondary" > It is a {person?.hourSign?.fixedElement} & {person?.hourSign?.yinYang} sign from {person?.hourSign?.trine} Trine.</p></h4>
                                         <p className="lead" >{person?.hourSign?.text}</p>
+                                        <p className="lead" >
+                                             <ul>
+                                                  <li>Best Match is {person?.hourSign?.bestMatch.toString()}</li>
+                                                  <li>Average Match is {person?.hourSign?.averageMatch.toString()}</li>
+                                                  <li>Bad Match is {person?.hourSign?.superBad.toString()}</li>
+                                                  <li>Harmful Match is {person?.hourSign?.harmful.toString()}</li>
+                                             </ul>
+                                        </p>
                                    </div>
-                                   <div className="col-md-5" >
-                                        <svg className="bd-placeholder-img bd-placeholder-img-lg featurette-image img-fluid mx-auto" width="500" height="500" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: 500x500" preserveAspectRatio="xMidYMid slice" focusable="false" > <title>Placeholder </title><rect width="100%" height="100%" fill="var(--bs-secondary-bg)"></rect > <text x="50%" y="50%" fill="var(--bs-secondary-color)" dy=".3em" > 500x500 </text></svg >
+                                   <div className="col-md-5" style={{ position: 'relative', width: '500px', height: '500px' }}>
+                                        <Image
+                                             src={`/static/images/wallpapers/${hourSignWallpaper}`}
+                                             // src={`/static/images/wallpapers/square-versatiles.svg`}
+                                             alt={`${person?.hourSign?.english}`}
+                                             objectFit="cover"
+                                             layout="fill"
+                                        />
                                    </div>
                               </div>
 
