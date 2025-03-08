@@ -27,7 +27,10 @@ export const handler: Handler = async (event) => {
                };
           }
 
-          const inputDate = new Date(dob);
+          // Parse Local DOB from UI
+          const [datePart, timePart] = dob.split("T");
+          const inputDate = new Date(`${datePart}T${timePart}`);
+          // const inputDate = new Date(dob);
           const year = inputDate.getFullYear();
           const month = inputDate.getMonth();
           const date = inputDate.getDate();
