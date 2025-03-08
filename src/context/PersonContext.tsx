@@ -99,7 +99,11 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
 
                const response = await fetch(`${API_BASE_URL}/.netlify/functions/addPerson`, {
                     method: "POST",
-                    body: JSON.stringify(person),
+                    body: JSON.stringify({
+                         ...person,
+                         dob: person.dob.toISOString(),
+                         timezoneOffset: new Date().getTimezoneOffset()
+                    }),
                     headers: {
                          authorization: `Bearer ${token}`
                     }

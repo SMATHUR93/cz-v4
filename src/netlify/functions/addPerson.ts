@@ -7,6 +7,12 @@ import { getFullChineseZodiac, symbolDetails } from "./commonMethods";
 
 const db = admin.firestore();
 
+// 🛠 Convert UTC DOB Back to User’s Local Time
+const convertUTCToLocal = (utcDob: string, timezoneOffset: number): Date => {
+     const utcDate = new Date(utcDob);
+     return new Date(utcDate.getTime() - timezoneOffset * 60000); // Adjust to local time
+};
+
 export const handler: Handler = async (event) => {
 
      // 🔹 Authenticate the request
@@ -19,7 +25,7 @@ export const handler: Handler = async (event) => {
           return { statusCode: 405, body: "Method Not Allowed" };
      }
      try {
-          const { name, email, dob } = JSON.parse(event.body || "{}");
+          const { name, email, dob, timezoneOffset } = JSON.parse(event.body || "{}");
           if (!name || !email || !dob) {
                return {
                     statusCode: 400,
@@ -27,9 +33,7 @@ export const handler: Handler = async (event) => {
                };
           }
 
-          // Parse Local DOB from UI
-          const [datePart, timePart] = dob.split("T");
-          const inputDate = new Date(`${datePart}T${timePart}`);
+          const inputDate = convertUTCToLocal(dob, timezoneOffset);
           // const inputDate = new Date(dob);
           const year = inputDate.getFullYear();
           const month = inputDate.getMonth();
@@ -38,6 +42,7 @@ export const handler: Handler = async (event) => {
 
           console.log(`DEBUG :: START addHandler`);
           console.log(`dob = ${dob}`);
+          console.log(`timezoneOffset = ${timezoneOffset}`);
           console.log(`inputDate = ${inputDate}`);
           console.log(`year = ${year}`);
           console.log(`month = ${month}`);
