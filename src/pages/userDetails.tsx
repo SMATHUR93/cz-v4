@@ -285,10 +285,10 @@ const UserDetails = () => {
                                                                  <tr key={currentPerson?.name}>
                                                                       <td>{currentPerson?.name}</td>
                                                                       <td>{
-                                                                           currentPerson?.compatibilityPercent >= 75 ? <span style={{ color: 'green' }}><b>Good Match </b>at <i>{currentPerson?.compatibilityPercent}</i></span> :
-                                                                                currentPerson?.compatibilityPercent >= 50 ? <span style={{ color: 'orange' }}><b>Average Match </b>at <i>{currentPerson?.compatibilityPercent}</i></span> :
-                                                                                     currentPerson?.compatibilityPercent >= 20 ? <span style={{ color: 'red' }}><b>Bad Math </b>at <i>{currentPerson?.compatibilityPercent}</i></span> :
-                                                                                          <span style={{ color: 'black' }}><b>`Harmful Match`</b></span>
+                                                                           currentPerson?.compatibilityPercent >= 75 ? <span style={{ color: 'green' }}><b>Good Match </b>at <i>{currentPerson?.compatibilityPercent} %</i></span> :
+                                                                                currentPerson?.compatibilityPercent >= 50 ? <span style={{ color: 'orange' }}><b>Average Match </b>at <i>{currentPerson?.compatibilityPercent} %</i></span> :
+                                                                                     currentPerson?.compatibilityPercent >= 20 ? <span style={{ color: 'red' }}><b>Bad Math </b>at <i>{currentPerson?.compatibilityPercent} %</i></span> :
+                                                                                          <span style={{ color: 'black' }}><b>`Harmful Match`</b>at <i>{currentPerson?.compatibilityPercent} %</i></span>
                                                                       }</td>
                                                                  </tr>
                                                             );
