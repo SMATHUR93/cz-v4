@@ -38,7 +38,6 @@ const UserTable = ({ name, email, birthdaytime }: {
                               return (
                                    <tr key={currentPerson?.id} onClick={async () => {
                                         await fetchPerson(currentPerson.id!);
-                                        console.log("Selected User is " + person?.name);
                                         router.push('/userDetails');
                                    }}>
                                         <td>{currentPerson?.name}</td>

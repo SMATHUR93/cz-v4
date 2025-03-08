@@ -52,8 +52,6 @@ const UserDetails = () => {
      const hourSignWallpaperIndex = zodiacs[hourSign] - 1;
      const hourSignWallpaper = backgroundImgs[hourSignWallpaperIndex + 24];
 
-     // console.log(`yearSignWallpaper is ${yearSignWallpaper}, monthSignWallpaper is ${monthSignWallpaper}, hourSignWallpaper is ${hourSignWallpaper}`);
-
      useEffect(() => {
           if (!person) {
                router.push('/');

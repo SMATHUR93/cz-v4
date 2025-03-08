@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/router';
 
 const Login = () => {
-     const { login, register } = useAuth();
+     const { login } = useAuth();
      const router = useRouter();
      const [email, setEmail] = useState('temp1@example.com');
      const [password, setPassword] = useState('temp1@example.com');
@@ -52,14 +52,6 @@ const Login = () => {
                          }}
                     >Sign in</button>
                     <br />
-                    <br />
-                    <button
-                         className="btn btn-primary w-100 py-2"
-                         onClick={async () => {
-                              await register(email, password);
-                              router.push('/');
-                         }}
-                    >Register</button>
                     <p className="mt-5 mb-3 text-body-secondary text-align-center">© 2014–2025</p>
                </main>
           </div>

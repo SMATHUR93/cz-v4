@@ -15,9 +15,6 @@ const handler: Handler = async (event) => {
      }
      try {
           const id = event.rawUrl.split('fetchPerson/')[1] || "{}";
-          console.log("Start Debug block");
-          console.log(id);
-          console.log("Finish Debug block");
           if (!id) {
                return {
                     statusCode: 400,
