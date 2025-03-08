@@ -6,6 +6,12 @@ import { getFullChineseZodiac, symbolDetails } from "./commonMethods";
 
 const db = admin.firestore();
 
+// 🛠 Convert UTC DOB Back to User’s Local Time
+const convertUTCToLocal = (utcDob: string, timezoneOffset: number): Date => {
+     const utcDate = new Date(utcDob);
+     return new Date(utcDate.getTime() - timezoneOffset * 60000); // Adjust to local time
+};
+
 export const handler: Handler = async (event) => {
      // 🔹 Authenticate the request
      const authError = await authenticate(event);
@@ -16,7 +22,7 @@ export const handler: Handler = async (event) => {
           return { statusCode: 405, body: "Method Not Allowed" };
      }
      try {
-          const { id, name, email, dob } = JSON.parse(event.body || "{}");
+          const { id, name, email, dob, timezoneOffset } = JSON.parse(event.body || "{}");
           if (!id || !name || !email || !dob) {
                return {
                     statusCode: 400,
@@ -24,7 +30,7 @@ export const handler: Handler = async (event) => {
                };
           }
 
-          const inputDate = new Date(dob);
+          const inputDate = convertUTCToLocal(dob, timezoneOffset);
           const year = inputDate.getFullYear();
           const month = inputDate.getMonth();
           const date = inputDate.getDate();

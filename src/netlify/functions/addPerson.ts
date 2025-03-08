@@ -34,7 +34,6 @@ export const handler: Handler = async (event) => {
           }
 
           const inputDate = convertUTCToLocal(dob, timezoneOffset);
-          // const inputDate = new Date(dob);
           const year = inputDate.getFullYear();
           const month = inputDate.getMonth();
           const date = inputDate.getDate();

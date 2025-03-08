@@ -59,8 +59,8 @@ const UserDetails = () => {
                const tempArr = [];
                for (let i = 0; i < people.length; i++) {
                     const currentPerson = people[i];
-                    if (currentPerson?.id == thisPerson?.id) {
-                         return;
+                    if (currentPerson.name === thisPerson.name) {
+                         continue;
                     } else {
                          let compatibilityPercent = 0.0;
 
