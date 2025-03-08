@@ -34,6 +34,8 @@ export const handler: Handler = async (event) => {
           const hour = inputDate.getHours();
 
           console.log(`DEBUG :: START addHandler`);
+          console.log(`dob = ${dob}`);
+          console.log(`inputDate = ${inputDate}`);
           console.log(`year = ${year}`);
           console.log(`month = ${month}`);
           console.log(`date = ${date}`);
