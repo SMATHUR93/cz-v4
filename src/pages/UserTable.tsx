@@ -16,7 +16,7 @@ const UserTable = ({ name, email, birthdaytime }: {
      birthdaytime: string
 }) => {
      const router = useRouter();
-     const { person, people, updatePerson, deletePerson, fetchPerson } = usePersonContext();
+     const { people, updatePerson, deletePerson, fetchPerson } = usePersonContext();
      return (
           <div className="table-responsive h-100 p-5 bg-body-tertiary border rounded-3">
                <h3>User List</h3>
