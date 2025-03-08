@@ -93,6 +93,10 @@ const PersonProvider = ({ children }: { children: ReactNode }) => {
           }
           const token = await currentUser.getIdToken();
           try {
+               console.log(`DEBUG :: START addHandler`);
+               console.log(`person.dob = ${person.dob}`);
+               console.log(`DEBUG :: END addHandler`);
+
                const response = await fetch(`${API_BASE_URL}/.netlify/functions/addPerson`, {
                     method: "POST",
                     body: JSON.stringify(person),
